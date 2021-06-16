@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <style>
+        html, body {
+            padding: 0;
+            margin: 0;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            height: 100%;
+        }
+
+        #app-bar {
+            background: #3c5a99;
+            height: 50px;
+            -webkit-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.75);
+        }
+
+        .flex-container {
+            height: 50%;
+            font-size: 26px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flex-item {
+            text-align: center;
+            color: #32a852;
+        }
+
+        .flex-item span {
+            font-size: 18px;
+            color: #828282;
+        }
+        .wrap {
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+<div id="app-bar"></div>
+<div class="flex-container">
+    <div class="flex-item">Success!
+        <br>
+        <span>Redirecting you to your application..</span>
+        <br>
+        <p class="wrap">JWT : {{JWT}}</p>
+    </div>
+</div>
+</body>
+</html>

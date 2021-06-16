@@ -1,0 +1,34 @@
+authentication-config:
+  facebook:
+    clientId: 215302727174079
+    clientSecret: 653408bf74b2fea8f4177749fc7fe480
+    scope: email
+    callbackUrl: https://localdev.infotamia.com/weather/api/v1/auth/facebook/callback
+    profileUrl: https://graph.facebook.com/v3.3/me?fields=id,first_name,last_name,email,picture
+jwt:
+  secret: secret
+  issuer: https://infotamia.com
+  expireAt: 3600
+role-access:
+  rolePermissionMap:
+    USER:
+      '/weather':
+        - 'GET /'
+        - 'GET favourites'
+        - 'POST favourites'
+        - 'DELETE favourites/{city}'
+    ANONYMOUS:
+      '/weather':
+        - 'GET /'
+logging:
+  level:
+    root: INFO
+    com.zaxxer.hikari: DEBUG
+server:
+  servlet:
+    context-path: "/weather/api/v1/"
+spring:
+  jpa:
+    properties:
+      hibernate:
+        dialect: "org.hibernate.spatial.dialect.mysql.MySQL8SpatialDialect"

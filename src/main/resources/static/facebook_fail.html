@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <style>
+        html, body {
+            padding: 0;
+            margin: 0;
+            font-family: Verdana, Geneva, Tahoma, sans-serif;
+            height: 100%;
+        }
+
+        #app-bar {
+            background: #3c5a99;
+            height: 50px;
+            -webkit-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 1px 3px 0px rgba(0, 0, 0, 0.75);
+        }
+
+        .flex-container {
+            height: 80%;
+            font-size: 26px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .flex-item {
+            text-align: center;
+            color: #f75959;
+        }
+
+        .flex-item span {
+            font-size: 18px;
+            color: #828282;
+        }
+    </style>
+</head>
+<body>
+<div id="app-bar"></div>
+<div class="flex-container">
+    <div class="flex-item">Login failed.
+        <br>
+        <span>Invalid credentials.</span>
+    </div>
+</div>
+</body>
+</html>

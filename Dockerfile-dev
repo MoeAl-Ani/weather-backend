@@ -1,0 +1,6 @@
+FROM openjdk:11-jre-slim-stretch
+WORKDIR /
+COPY ["target/weather.jar", "weather.jar"]
+EXPOSE 8080
+EXPOSE 5005
+CMD sleep 5 && java -agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005 -jar weather.jar
