@@ -32,7 +32,7 @@ import java.util.Optional;
  * @author Mohammed Al-Ani
  */
 @RestController
-@RequestMapping(path = "/oauth/facebook")
+@RequestMapping(path = "oauth/facebook")
 public class FacebookUserLoginResource {
 
     private static final Logger logger = LoggerFactory.getLogger(FacebookUserLoginResource.class);
@@ -56,7 +56,7 @@ public class FacebookUserLoginResource {
     @SkipFilter
     public ResponseEntity<?> getRedirectCustomer() throws URISyntaxException {
         String authorizationUrl = facebookAuthenticationService.getAuthorizationUrl(true);
-        return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT)
+        return ResponseEntity.status(HttpStatus.OK)
                 .location(new URI(authorizationUrl))
                 .build();
     }
@@ -65,11 +65,11 @@ public class FacebookUserLoginResource {
     @SkipFilter
     public ResponseEntity<?> getRedirectAdmin() throws URISyntaxException {
         String authorizationUrl = facebookAuthenticationService.getAuthorizationUrl(false);
-        return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT)
+        return ResponseEntity.status(HttpStatus.OK)
                 .location(new URI(authorizationUrl))
                 .build();
     }
-    @GetMapping(path = "/callback", produces = MediaType.TEXT_HTML_VALUE)
+    @GetMapping(path = "callback", produces = MediaType.TEXT_HTML_VALUE)
     @SkipFilter
     public ResponseEntity<?> callback(
             @RequestParam("code") String code,
@@ -82,33 +82,32 @@ public class FacebookUserLoginResource {
             AuthenticationToken authenticationToken = new AuthenticationToken(accessToken);
             return customerLogin(authenticationToken);
         } else {
+            String accessToken = facebookAuthenticationService.getAccessToken(code);
+            try {
+                FacebookExternalAccount facebookExternalAccount = facebookAuthenticationService.getAccountDetails(accessToken);
+                Optional<UserEntity> opUser = userService.findUserByEmail(facebookExternalAccount.getEmail());
+                if (!opUser.isPresent()) {
+                    UserEntity userEntity = new UserEntity();
+                    userEntity.setFirstName(facebookExternalAccount.getFirst_name());
+                    userEntity.setLastName(facebookExternalAccount.getLast_name());
+                    userEntity.setEmail(facebookExternalAccount.getEmail());
+                    userService.insertUser(userEntity);
+                }
+                String jwt = jwtTokenService
+                        .withSubject(facebookExternalAccount.getEmail())
+                        .withAuthenticationProvider(AuthenticationProvider.FACEBOOK)
+                        .withAccessToken(accessToken)
+                        .withSessionType(SessionType.USER)
+                        .buildAndIssueJwtToken();
 
-        }
-        String accessToken = facebookAuthenticationService.getAccessToken(code);
-        try {
-            FacebookExternalAccount facebookExternalAccount = facebookAuthenticationService.getAccountDetails(accessToken);
-            Optional<UserEntity> opUser = userService.findUserByEmail(facebookExternalAccount.getEmail());
-            if (!opUser.isPresent()) {
-                UserEntity userEntity = new UserEntity();
-                userEntity.setFirstName(facebookExternalAccount.getFirst_name());
-                userEntity.setLastName(facebookExternalAccount.getLast_name());
-                userEntity.setEmail(facebookExternalAccount.getEmail());
-                userService.insertUser(userEntity);
+                return ResponseEntity.ok()
+                        .header(HttpHeaders.SET_COOKIE, CookieService.newCookie(jwt))
+                        .body(FileUtils.loadFile("static/facebook_success.html"));
+            } catch (Exception e) {
+                logger.error("FAILED LOGIN STEP 2 :", e);
+                return ResponseEntity.ok()
+                        .body(FileUtils.loadFile("static/facebook_fail.html"));
             }
-            String jwt = jwtTokenService
-                    .withSubject(facebookExternalAccount.getEmail())
-                    .withAuthenticationProvider(AuthenticationProvider.FACEBOOK)
-                    .withAccessToken(accessToken)
-                    .withSessionType(SessionType.USER)
-                    .buildAndIssueJwtToken();
-
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.SET_COOKIE, CookieService.newCookie(jwt))
-                    .body(FileUtils.loadFile("static/facebook_success.html"));
-        } catch (Exception e) {
-            logger.error("FAILED LOGIN STEP 2 :", e);
-            return ResponseEntity.ok()
-                    .body(FileUtils.loadFile("static/facebook_fail.html"));
         }
     }
 
@@ -132,7 +131,8 @@ public class FacebookUserLoginResource {
                         .withAccessToken(loginToken.getToken())
                         .withSessionType(SessionType.USER)
                         .buildAndIssueJwtToken();
-                return ResponseEntity.ok()
+                return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT)
+                        .location(URI.create("https://localdev.infotamia.com:3000"))
                         .header(HttpHeaders.SET_COOKIE, CookieService.newCookie(jwt))
                         .build();
             } else {
@@ -153,7 +153,8 @@ public class FacebookUserLoginResource {
                         .withAccessToken(loginToken.getToken())
                         .withSessionType(SessionType.USER)
                         .buildAndIssueJwtToken();
-                return ResponseEntity.ok()
+                return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT)
+                        .location(URI.create("https://localdev.infotamia.com:3000"))
                         .header(HttpHeaders.SET_COOKIE, CookieService.newCookie(jwt))
                         .build();
             }

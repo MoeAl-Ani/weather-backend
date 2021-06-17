@@ -6,6 +6,7 @@ import com.github.scribejava.apis.facebook.FacebookAccessTokenErrorResponse;
 import com.github.scribejava.core.builder.ServiceBuilder;
 import com.github.scribejava.core.model.*;
 import com.github.scribejava.core.oauth.OAuth20Service;
+import com.infotamia.weather.access.SessionType;
 import com.infotamia.weather.config.FacebookAuthenticationConfiguration;
 import com.infotamia.weather.exception.BaseErrorCode;
 import com.infotamia.weather.exception.ExceptionMessage;
@@ -13,8 +14,10 @@ import com.infotamia.weather.exception.RestCoreException;
 import com.infotamia.weather.pojos.common.AppState;
 import com.infotamia.weather.pojos.common.user.ExternalAccountAbstract;
 import com.infotamia.weather.pojos.common.user.FacebookExternalAccount;
+import com.infotamia.weather.services.jwt.JwtTokenService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 
@@ -35,6 +38,9 @@ public class FacebookAuthenticationService implements BaseOAuth20Service {
     private final ObjectMapper mapper;
     private final AppState state;
 
+    @Autowired
+    JwtTokenService jwtTokenService;
+
 
     public FacebookAuthenticationService(FacebookAuthenticationConfiguration configuration, ObjectMapper mapper, AppState state) {
         this.facebookConfig = configuration;
@@ -53,6 +59,10 @@ public class FacebookAuthenticationService implements BaseOAuth20Service {
 
     @Override
     public String getAuthorizationUrl(Boolean isCustomer) {
+        String digitalSignature = jwtTokenService.withExpireInMin(2)
+                .withSessionType(isCustomer ? SessionType.USER : null)
+                .buildAndIssueJwtToken();
+        state.setDigitalSignature(digitalSignature);
         return service.getAuthorizationUrl(state.getDigitalSignature());
     }
 

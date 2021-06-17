@@ -6,7 +6,7 @@ services:
       dockerfile: Dockerfile-dev
     ports:
       - "8080"
-      - "5005"
+      - "5005:5005"
     volumes:
       - ${PWD}/config/application.yaml:/application.yaml
   haproxy:

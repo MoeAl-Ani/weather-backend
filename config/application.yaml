@@ -3,7 +3,7 @@ authentication-config:
     clientId: 215302727174079
     clientSecret: 653408bf74b2fea8f4177749fc7fe480
     scope: email
-    callbackUrl: https://localdev.infotamia.com/weather/api/v1/auth/facebook/callback
+    callbackUrl: https://localdev.infotamia.com/weather/api/v1/oauth/facebook/callback
     profileUrl: https://graph.facebook.com/v3.3/me?fields=id,first_name,last_name,email,picture
 jwt:
   secret: secret
