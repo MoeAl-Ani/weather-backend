@@ -37,7 +37,13 @@ public class AuthorizationFilter implements Filter {
         Method hack = null;
         HttpServletResponse res = (HttpServletResponse) response;
         try {
-            HandlerMethod handlerMethod = (HandlerMethod) requestMappingHandlerMapping.getHandler((HttpServletRequest) request).getHandler();
+            HandlerMethod handlerMethod = null;
+            try {
+                handlerMethod = (HandlerMethod) requestMappingHandlerMapping.getHandler((HttpServletRequest) request).getHandler();
+            } catch (Exception e) {
+                res.setStatus(404);
+                return;
+            }
             if (handlerMethod.getMethod().isAnnotationPresent(SkipFilter.class)) {
                 chain.doFilter(request, response);
                 return;
@@ -59,7 +65,7 @@ public class AuthorizationFilter implements Filter {
                 res.setStatus(404);
             }
             chain.doFilter(request, response);
-        } catch (HttpRequestMethodNotSupportedException e) {
+        } catch (HttpRequestMethodNotSupportedException | NullPointerException e) {
             res.setStatus(404);
         } catch (Exception e) {
             e.printStackTrace();
