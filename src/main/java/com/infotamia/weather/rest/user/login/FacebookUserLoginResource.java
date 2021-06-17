@@ -132,7 +132,7 @@ public class FacebookUserLoginResource {
                         .withSessionType(SessionType.USER)
                         .buildAndIssueJwtToken();
                 return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT)
-                        .location(URI.create("https://localdev.infotamia.com:3000"))
+                        .location(URI.create("https://localdev.infotamia.com:3000/#/success"))
                         .header(HttpHeaders.SET_COOKIE, CookieService.newCookie(jwt))
                         .build();
             } else {
@@ -154,7 +154,7 @@ public class FacebookUserLoginResource {
                         .withSessionType(SessionType.USER)
                         .buildAndIssueJwtToken();
                 return ResponseEntity.status(HttpStatus.TEMPORARY_REDIRECT)
-                        .location(URI.create("https://localdev.infotamia.com:3000"))
+                        .location(URI.create("https://localdev.infotamia.com:3000/#/success"))
                         .header(HttpHeaders.SET_COOKIE, CookieService.newCookie(jwt))
                         .build();
             }
