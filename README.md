@@ -9,7 +9,7 @@
 - Self-signed certificate used for SSL(HTTPS)
 
 ## CONFIG
-- all configuration files supplied to the docker-compose through the running script.
+- all configuration files are supplied to the docker-compose through the running script.
 
 ## RUNNING
 - from the project root directory execute the following
