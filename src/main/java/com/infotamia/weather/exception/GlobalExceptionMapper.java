@@ -2,13 +2,16 @@ package com.infotamia.weather.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
@@ -19,7 +22,7 @@ import java.util.List;
  * @author Mohammed Al-Ani
  */
 @ControllerAdvice
-public class GlobalExceptionMapper  {
+public class GlobalExceptionMapper extends ResponseEntityExceptionHandler {
 
     private static final Logger log = LoggerFactory.getLogger(GlobalExceptionMapper.class);
     @ExceptionHandler({BaseException.class})
@@ -80,13 +83,17 @@ public class GlobalExceptionMapper  {
         return messages;
     }
 
-    @ExceptionHandler(BindException.class)
-    ResponseEntity<?> onMethodArgumentNotValidException(
-            BindException e) {
+    @Override
+    protected ResponseEntity<Object> handleBindException(BindException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
         List<ExceptionMessage> messages = new ArrayList<>();
         for (ObjectError allError : e.getBindingResult().getAllErrors()) {
             messages.add(new ExceptionMessage(400, BaseErrorCode.INVALID_PARAMETERS, allError.getDefaultMessage()));
         }
         return new ResponseEntity<>(new RestCoreException(400, messages), HttpStatus.valueOf(400));
+    }
+
+    @Override
+    protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
+        return new ResponseEntity<>(new RestCoreException(400, BaseErrorCode.INVALID_PARAMETERS, e.getMessage()), HttpStatus.valueOf(400));
     }
 }
