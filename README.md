@@ -17,6 +17,17 @@
         - ***make deploy***
     - run just haproxy
         - ***make deploy_base***
+## HOST INFO
+backend will be hosted on below:
+- exposed from haproxy ***https://localdev.infotamia.com/weather/api/v1/***
+- backend port internally 8080
+
+## APIS
+- GET https://localdev.infotamia.com/weather/api/v1/weather/?city=baghdad
+- POST https://localdev.infotamia.com/weather/api/v1/weather/favourites data= {"city": "baghdad"} -H COOKIE=cookie
+- GET https://localdev.infotamia.com/weather/api/v1/weather/favourites -H COOKIE=cookie
+- DELETE https://localdev.infotamia.com/weather/api/v1/weather/favourites/{city} -H COOKIE=cookie
+
 ## After Running
 - make sure to accept the self sign certificate in your browser by opening the link below:
     - ***https://localdev.infotamia.com/weather/api/v1/weather/?city=baghdad***
