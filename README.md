@@ -20,6 +20,11 @@
 ## After Running
 - make sure to accept the self sign certificate in your browser by opening the link below:
     - ***https://localdev.infotamia.com/weather/api/v1/weather/?city=baghdad***
+    
+## LOGIN
+use below facebook credentials:
+- username : ***fwgwwskyyc_1624032396@tfbnw.net***
+- password : ***1234@1234***
 
 ## License
 ```
