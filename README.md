@@ -11,6 +11,10 @@
 ## CONFIG
 - all configuration files are supplied to the docker-compose through the running script.
 
+## PRE RUNNING REQUIREMENTS
+- Docker version 20.10.3
+- docker-compose version 1.27.1
+
 ## RUNNING
 - from the project root directory execute the following
     - run container stack
