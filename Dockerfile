@@ -1,4 +1,4 @@
-FROM openjdk:11-jre-slim-stretch
+FROM openjdk:8-jre-slim-stretch
 WORKDIR /
 
 COPY ["target/weather.jar", "weather.jar"]
