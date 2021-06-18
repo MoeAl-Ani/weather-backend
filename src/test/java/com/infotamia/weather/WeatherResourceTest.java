@@ -65,7 +65,7 @@ class WeatherResourceTest extends BaseTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(mapper.writeValueAsBytes(fav))
                 .cookie(new Cookie(HttpHeaders.AUTHORIZATION, jwt)))
-                .andExpect(status().is(400));
+                .andExpect(status().is(204));
 
         mvc.perform(MockMvcRequestBuilders.delete("/weather/favourites/baghdad")
                 .contentType(MediaType.APPLICATION_JSON)
