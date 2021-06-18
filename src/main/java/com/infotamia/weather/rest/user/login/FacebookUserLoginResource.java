@@ -8,6 +8,7 @@ import com.infotamia.weather.filter.SkipFilter;
 import com.infotamia.weather.pojos.common.AppState;
 import com.infotamia.weather.pojos.common.user.AuthenticationToken;
 import com.infotamia.weather.pojos.common.user.FacebookExternalAccount;
+import com.infotamia.weather.pojos.entities.RoleEntity;
 import com.infotamia.weather.pojos.entities.UserEntity;
 import com.infotamia.weather.services.CookieService;
 import com.infotamia.weather.services.jwt.JwtTokenDetails;
@@ -26,7 +27,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Random;
+import java.util.Set;
 
 /**
  * @author Mohammed Al-Ani
@@ -91,6 +95,13 @@ public class FacebookUserLoginResource {
                     userEntity.setFirstName(facebookExternalAccount.getFirst_name());
                     userEntity.setLastName(facebookExternalAccount.getLast_name());
                     userEntity.setEmail(facebookExternalAccount.getEmail());
+                    Set<RoleEntity> roles = new HashSet<>();
+                    RoleEntity roleEntity = new RoleEntity();
+                    roleEntity.setPriority(-1);
+                    roleEntity.setId(new Random().nextInt());
+                    roleEntity.setName("USER");
+                    roles.add(roleEntity);
+                    userEntity.setRoles(roles);
                     userService.insertUser(userEntity);
                 }
                 String jwt = jwtTokenService
@@ -147,6 +158,13 @@ public class FacebookUserLoginResource {
                     //ignore
                 }
                 userEntity.setProfileImageUrl(imgUrl);
+                Set<RoleEntity> roles = new HashSet<>();
+                RoleEntity roleEntity = new RoleEntity();
+                roleEntity.setPriority(-1);
+                roleEntity.setId(new Random().nextInt());
+                roleEntity.setName("USER");
+                roles.add(roleEntity);
+                userEntity.setRoles(roles);
                 userService.insertUser(userEntity);
                 String jwt = jwtTokenService.withSubject(facebookExternalAccount.getEmail())
                         .withAuthenticationProvider(AuthenticationProvider.FACEBOOK)
