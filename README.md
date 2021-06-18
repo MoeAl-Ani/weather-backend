@@ -12,6 +12,7 @@
 - all configuration files are supplied to the docker-compose through the running script.
 
 ## PRE RUNNING REQUIREMENTS
+- Linux/Mac based OS
 - Docker version 20.10.3
 - docker-compose version 1.27.1
 
