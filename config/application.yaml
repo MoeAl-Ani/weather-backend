@@ -8,7 +8,7 @@ authentication-config:
 jwt:
   secret: secret
   issuer: https://infotamia.com
-  expireAt: 3600
+  expireAt: 864000
 role-access:
   rolePermissionMap:
     USER:
