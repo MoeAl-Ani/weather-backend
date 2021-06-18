@@ -1,4 +1,25 @@
-# com.infotamia.weathery Backend
+# Weather Backend
+- a simple weather API written in java/spring-boot.
+## STACK
+- Haproxy as the main load balancer and API gateway.
+- Undertow servlet server.
+- Spring boot for the REST api.
+- Docker container used for building the backend image.
+- Docker compose used as the main deployment script.
+- Self-signed certificate used for SSL(HTTPS)
+
+## CONFIG
+- all configuration files supplied to the docker-compose through the running script.
+
+## RUNNING
+- from the project root directory execute the following
+    - run container stack
+        - ***make deploy***
+    - run just haproxy
+        - ***make deploy_base***
+## After Running
+- make sure to accept the self sign certificate in your browser by opening the link below:
+    - ***https://localdev.infotamia.com/weather/api/v1/weather/?city=baghdad***
 
 ## License
 ```
