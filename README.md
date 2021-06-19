@@ -32,6 +32,8 @@ backend will be hosted on below:
 - POST https://localdev.infotamia.com/weather/api/v1/weather/favourites data= {"city": "baghdad"} -H COOKIE=cookie
 - GET https://localdev.infotamia.com/weather/api/v1/weather/favourites -H COOKIE=cookie
 - DELETE https://localdev.infotamia.com/weather/api/v1/weather/favourites/{city} -H COOKIE=cookie
+- GET https://localdev.infotamia.com/weather/api/v1/oauth/facebook/customer
+- GET https://localdev.infotamia.com/weather/api/v1/oauth/facebook/callback
 
 ## After Running
 - make sure to accept the self sign certificate in your browser by opening the link below:
